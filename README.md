@@ -17,9 +17,9 @@ A neural network trained on the german traffic signs benchmark dataset (GTSRB). 
 
 ### Download the dataset
 
-* Visit `https://drive.google.com/uc?authuser=0&export=download&id=1WxQ-LmSLUUDbFaA5GGgvx1y_gP4lk1iP` to download the zip file
+* [Download the zip file](https://drive.google.com/uc?authuser=0&export=download&id=1WxQ-LmSLUUDbFaA5GGgvx1y_gP4lk1iP)
 * Place the zip file in `./data`, and unzip.
-* After it unzipping, the directory tree should look like: `data/gtsrb/`
+* After it unzipping, the dataset should be in `data/gtsrb/`
 * Remove the zip file: `rm data/gtsrb.zip`
 
 ## Process Dataset
