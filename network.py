@@ -1,11 +1,13 @@
 import os
 import numpy as np
+import matplotlib.pyplot as plt
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import BatchNormalization, Conv2D, MaxPooling2D, Activation, Flatten, Dropout, Dense
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.utils import plot_model
 from sklearn.metrics import classification_report
-import matplotlib.pyplot as plt
+from skimage import io
 
 class TrafficSignNet:
     @staticmethod
@@ -96,7 +98,7 @@ class TrafficSignNet:
         model.save(save_path)
     
     @staticmethod
-    def plot_history(model, h, out_dir='./artifacts/', show=True, save=True):
+    def plot_history(model, h, out_dir='./artifacts/images', show=True, save=True, dpi=150):
         n_epochs = len(h.history['loss'])
         n = np.arange(0, n_epochs)
         plt.style.use('ggplot')
@@ -109,5 +111,14 @@ class TrafficSignNet:
         plt.xlabel('Epoch #')
         plt.ylabel('Loss/Accuracy')
         plt.legend(loc='lower left')
-        if save: plt.savefig(os.path.join('train.png'))
+        os.makedirs(out_dir)
+        if save: plt.savefig(os.path.join(out_dir, 'train.png'), dpi=dpi)
         if show: plt.show()
+    
+    @staticmethod
+    def plot_model(model, out_dir='./artifacts/images', show=True, save=True, horizontal=False, nested=True, dpi=150):
+        rankdir = 'LR' if horizontal else 'TB'
+        outpath = os.path.join(out_dir, 'model.png')
+        os.makedirs(out_dir)
+        if save: plot_model(model, to_file=outpath, show_shapes=True, show_layer_names=True, rankdir=rankdir, expand_nested=nested, dpi=dpi)
+        if show: plt.imshow(io.imread(outpath)).show()
