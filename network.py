@@ -91,7 +91,7 @@ class TrafficSignNet:
         print(classification_report(y_test.argmax(axis=1), predictions.argmax(axis=1), target_names=signs.values()))
         # save the network to disk
         save_path = os.path.join(save_dir, 'model')
-        os.mkdirs(save_path, 0o755)
+        os.makedirs(save_path, 0o755)
         print('[INFO] serializing network to {}...'.format(save_path))
         model.save(save_path)
     
