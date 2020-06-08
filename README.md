@@ -4,6 +4,10 @@ A neural network trained on the german traffic signs benchmark dataset (GTSRB). 
 
 ## Installation
 
+### Prerequisites
+
+* You'll need Python3 installed
+
 ### Download the project
 
 * `git clone https://github.com/grese/traffic_signs.git`
