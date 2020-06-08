@@ -1,15 +1,17 @@
+import os
 import numpy as np
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import BatchNormalization, Conv2D, MaxPooling2D, Activation, Flatten, Dropout, Dense
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from sklearn.metrics import classification_report
+import matplotlib.pyplot as plt
 
 class TrafficSignNet:
     @staticmethod
     def build(width, height, depth, classes):
         model = Sequential()
         input_shape = (height, width, depth)
-        print('INPUT SHAPE:', input_shape, 'CLASSES', classes)
         chan_dim = -1
         # CONV => RELU => BN => POOL
         model.add(Conv2D(8, (5, 5), padding='same', input_shape=input_shape))
@@ -79,4 +81,33 @@ class TrafficSignNet:
             epochs=epochs,
             class_weight=class_weights,
             verbose=1)
-        return history
+        return model, history
+    
+    @staticmethod
+    def evaluate(model, X_test, y_test, signs, save_dir='./artifacts/', bs=64):
+        # evaluate the network
+        print('[INFO] evaluating network...')
+        predictions = model.predict(X_test, batch_size=bs)
+        print(classification_report(y_test.argmax(axis=1), predictions.argmax(axis=1), target_names=signs.values()))
+        # save the network to disk
+        save_path = os.path.join(save_dir, 'model')
+        os.mkdirs(save_path, 0o755)
+        print('[INFO] serializing network to {}...'.format(save_path))
+        model.save(save_path)
+    
+    @staticmethod
+    def plot_history(model, h, out_dir='./artifacts/', show=True, save=True):
+        n_epochs = len(h.history['loss'])
+        n = np.arange(0, n_epochs)
+        plt.style.use('ggplot')
+        plt.figure()
+        plt.plot(n, h.history['loss'], label='train_loss')
+        plt.plot(n, h.history['val_loss'], label='val_loss')
+        plt.plot(n, h.history['accuracy'], label='train_acc')
+        plt.plot(n, h.history['val_accuracy'], label='val_acc')
+        plt.title('Training Loss and Accuracy on Dataset')
+        plt.xlabel('Epoch #')
+        plt.ylabel('Loss/Accuracy')
+        plt.legend(loc='lower left')
+        if save: plt.savefig(os.path.join('train.png'))
+        if show: plt.show()

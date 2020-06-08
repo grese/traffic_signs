@@ -24,8 +24,8 @@ A neural network trained on the german traffic signs benchmark dataset (GTSRB). 
 
 ## Process Dataset
 
-* Open `dataset.ipynb`, and run all cells (this may take a couple minutes)
-* Upon completion, it will have generated four pickle files (`data/X_train.pkl`, `data/y_train.pkl`, `data/X_test.pkl`, `data/y_test.pkl`)
+* Open `dataset.ipynb`, and run all cells (this may take several minutes)
+* Upon completion, it will have generated five pickle files (`data/X_train.pkl`, `data/y_train.pkl`, `data/X_test.pkl`, `data/y_test.pkl`, `data/signs.pkl`)
 
 ## Build Network
 
