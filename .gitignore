@@ -1,0 +1,17 @@
+# Environment
+venv
+
+# Dataset
+data/*
+!data/.gitkeep
+
+# IDE
+.vscode
+
+# Python
+__pycache__
+
+# Other
+/secret
+/logs
+/notes
