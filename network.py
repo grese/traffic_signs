@@ -137,7 +137,7 @@ class TrafficSignNet:
         if show: io.imshow(io.imread(outpath))
     
     @staticmethod
-    def plot_predictions(predictions, y, signs, save_dir='./artifacts/images', size=(40,50), show=True, save=True):
+    def plot_predictions(predictions, y, signs, save_dir='./artifacts/images', size=(50,50), show=True, save=True):
         print('[INFO] creating confusion matrix...')
         cm = confusion_matrix(y_true=np.argmax(y, axis=1), y_pred=np.argmax(predictions, axis=1))
         labels = sorted(signs)
