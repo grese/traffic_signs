@@ -1,4 +1,4 @@
-import os
+import os, shutil
 import numpy as np
 import matplotlib.pyplot as plt
 from tensorflow.keras.models import Sequential
@@ -93,8 +93,9 @@ class TrafficSignNet:
         print(classification_report(y_test.argmax(axis=1), predictions.argmax(axis=1), target_names=signs.values()))
         # save the network to disk
         save_path = os.path.join(save_dir, 'model')
-        os.makedirs(save_path, 0o755)
-        print('[INFO] serializing network to {}...'.format(save_path))
+        if not os.path.exists(save_dir): os.makedirs(save_dir, 0o755)
+        if os.path.exists(save_path): shutil.rmtree(save_path, ignore_errors=True)
+        print(f'[INFO] serializing network to {save_path}...')
         model.save(save_path)
     
     @staticmethod
@@ -111,7 +112,7 @@ class TrafficSignNet:
         plt.xlabel('Epoch #')
         plt.ylabel('Loss/Accuracy')
         plt.legend(loc='lower left')
-        os.makedirs(out_dir)
+        if not os.path.exists(out_dir): os.makedirs(out_dir, 0o755)
         if save: plt.savefig(os.path.join(out_dir, 'train.png'), dpi=dpi)
         if show: plt.show()
     
@@ -119,6 +120,6 @@ class TrafficSignNet:
     def plot_model(model, out_dir='./artifacts/images', show=True, save=True, horizontal=False, nested=True, dpi=150):
         rankdir = 'LR' if horizontal else 'TB'
         outpath = os.path.join(out_dir, 'model.png')
-        os.makedirs(out_dir)
+        if not os.path.exists(out_dir): os.makedirs(out_dir, 0o755)
         if save: plot_model(model, to_file=outpath, show_shapes=True, show_layer_names=True, rankdir=rankdir, expand_nested=nested, dpi=dpi)
         if show: plt.imshow(io.imread(outpath)).show()
