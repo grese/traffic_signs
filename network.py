@@ -6,7 +6,7 @@ from tensorflow.keras.layers import BatchNormalization, Conv2D, MaxPooling2D, Ac
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.utils import plot_model
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, confusion_matrix
 from skimage import io
 
 class TrafficSignNet:
@@ -90,10 +90,17 @@ class TrafficSignNet:
         # evaluate the network
         print('[INFO] evaluating network...')
         predictions = model.predict(X_test, batch_size=bs)
-        print(classification_report(y_test.argmax(axis=1), predictions.argmax(axis=1), target_names=signs.values()))
+        report = classification_report(y_test.argmax(axis=1), predictions.argmax(axis=1), target_names=signs.values())
+        
+        print()
+        # y_pred_labels = np.argmax(y_pred_ohe, axis=1)  # only necessary if output has one-hot-encoding, shape=(n_samples)
+        # confusion_matrix = metrics.confusion_matrix(y_true=y_true_labels, y_pred=y_pred_labels)
+    
+    @staticmethod
+    def save_model(model, save_dir='./artifacts'):
         # save the network to disk
         save_path = os.path.join(save_dir, 'model')
-        if not os.path.exists(save_dir): os.makedirs(save_dir, 0o755)
+        if not os.path.exists(save_dir): os.makedirs(save_dir, 0o755, exist_ok=True)
         if os.path.exists(save_path): shutil.rmtree(save_path, ignore_errors=True)
         print(f'[INFO] serializing network to {save_path}...')
         model.save(save_path)
@@ -112,14 +119,14 @@ class TrafficSignNet:
         plt.xlabel('Epoch #')
         plt.ylabel('Loss/Accuracy')
         plt.legend(loc='lower left')
-        if not os.path.exists(out_dir): os.makedirs(out_dir, 0o755)
+        if not os.path.exists(out_dir): os.makedirs(out_dir, 0o755, exist_ok=True)
         if save: plt.savefig(os.path.join(out_dir, 'train.png'), dpi=dpi)
         if show: plt.show()
     
     @staticmethod
-    def plot_model(model, out_dir='./artifacts/images', show=True, save=True, horizontal=False, nested=True, dpi=150):
+    def plot_network(model, out_dir='./artifacts/images', show=True, save=True, horizontal=False, nested=True, dpi=150):
         rankdir = 'LR' if horizontal else 'TB'
         outpath = os.path.join(out_dir, 'model.png')
-        if not os.path.exists(out_dir): os.makedirs(out_dir, 0o755)
+        if not os.path.exists(out_dir): os.makedirs(out_dir, 0o755, exist_ok=True)
         if save: plot_model(model, to_file=outpath, show_shapes=True, show_layer_names=True, rankdir=rankdir, expand_nested=nested, dpi=dpi)
         if show: plt.imshow(io.imread(outpath)).show()
