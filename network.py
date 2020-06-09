@@ -130,7 +130,7 @@ class TrafficSignNet:
         outpath = os.path.join(out_dir, 'model.png')
         if not os.path.exists(out_dir): os.makedirs(out_dir, 0o755, exist_ok=True)
         if save: plot_model(model, to_file=outpath, show_shapes=True, show_layer_names=True, rankdir=rankdir, expand_nested=nested, dpi=dpi)
-        if show: plt.imshow(io.imread(outpath)).show()
+        if show: plt.imshow(io.imread(outpath))
     
     @staticmethod
     def plot_predictions(predictions, y, signs, save_dir='./artifacts/images', size=(10,10), show=True, save=True):
