@@ -6,7 +6,7 @@ A neural network trained on the german traffic signs benchmark dataset (GTSRB). 
 
 ### Prerequisites
 
-* You'll need Python3 installed
+* Python3 required
 
 ### Download the project
 
@@ -22,15 +22,18 @@ A neural network trained on the german traffic signs benchmark dataset (GTSRB). 
 ### Download the dataset
 
 * [Download the zip file](https://drive.google.com/uc?authuser=0&export=download&id=1WxQ-LmSLUUDbFaA5GGgvx1y_gP4lk1iP)
-* Place the zip file in `./data`, and unzip.
-* After it unzipping, the dataset should be in `data/gtsrb/`
+* Unzip file: `unzip ~/Downloads/gtsrb.zip -d ./data` *(after unzipping, data will be in `data/gtsrb/`)*
 * Remove the zip file: `rm data/gtsrb.zip`
 
 ## Process Dataset
 
-* Open `dataset.ipynb`, and run all cells (this may take several minutes)
-* Upon completion, it will have generated five pickle files (`data/X_train.pkl`, `data/y_train.pkl`, `data/X_test.pkl`, `data/y_test.pkl`, `data/signs.pkl`)
+Loads & processes the testing and training data, and generates 5 reusable pickled object files:
+(`data/X_train.pkl`, `data/y_train.pkl`, `data/X_test.pkl`, `data/y_test.pkl`, `data/signs.pkl`)
 
-## Build Network
+* Open `dataset.ipynb`, and run all cells (this may take several minutes)
+
+## Build & Train Network
+
+Builds and trains the network using the pickled objects created by `dataset.ipynb`
 
 * Open `network.ipynb`, and run all cells.
