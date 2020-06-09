@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-from tensorflow.keras.models import Sequential
+from tensorflow.keras.models import Sequential, load_model
 from tensorflow.keras.layers import BatchNormalization, Conv2D, MaxPooling2D, Activation, Flatten, Dropout, Dense
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
@@ -96,6 +96,10 @@ class TrafficSignNet:
         print(report)
         if save: TrafficSignNet.save_model(model, save_dir=save_dir)
         return predictions
+    
+    @staticmethod
+    def load_model(modelpath):
+        model = load_model(modelpath)
 
     @staticmethod
     def save_model(model, save_dir='./artifacts'):
@@ -130,15 +134,15 @@ class TrafficSignNet:
         outpath = os.path.join(out_dir, 'model.png')
         if not os.path.exists(out_dir): os.makedirs(out_dir, 0o755, exist_ok=True)
         if save: plot_model(model, to_file=outpath, show_shapes=True, show_layer_names=True, rankdir=rankdir, expand_nested=nested, dpi=dpi)
-        if show: plt.imshow(io.imread(outpath))
+        if show: io.imshow(io.imread(outpath))
     
     @staticmethod
-    def plot_predictions(predictions, y, signs, save_dir='./artifacts/images', size=(10,10), show=True, save=True):
+    def plot_predictions(predictions, y, signs, save_dir='./artifacts/images', size=(40,50), show=True, save=True):
         print('[INFO] creating confusion matrix...')
         cm = confusion_matrix(y_true=np.argmax(y, axis=1), y_pred=np.argmax(predictions, axis=1))
         labels = sorted(signs)
         df = pd.DataFrame(cm, labels, labels)
-        plt.figure(figsize=(10,10))
+        plt.figure(figsize=size)
         heatmap = sns.heatmap(df, annot=True)
         if not os.path.exists(save_dir): os.makedirs(save_dir, 0o755, exist_ok=True)
         if save: heatmap.get_figure().savefig(os.path.join(save_dir, 'predictions.png'))
